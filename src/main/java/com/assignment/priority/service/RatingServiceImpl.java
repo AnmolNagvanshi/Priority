@@ -33,7 +33,7 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public Rating createRatingByCategoryId(Integer categoryId, Rating rating) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("category with id = " + categoryId + "does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("category with given id does not exist"));
 
         long numOfCategories = categoryRepository.count();
         int priorityOrder = rating.getPriorityOrder();
@@ -46,19 +46,22 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public List<Rating> createAllRatings(List<RatingDto> ratings) {
         validateAllPriorityOrders(ratings);
+
         List<Category> categories = categoryRepository.findAll();
-        Map<Integer, Category> map = new HashMap<>();
+        Map<Integer, Category> categoryMap = new HashMap<>();
         for (Category category : categories) {
-            map.put(category.getId(), category);
+            categoryMap.put(category.getId(), category);
         }
+
         List<Rating> newRatings = new ArrayList<>();
         for (RatingDto rating : ratings) {
             newRatings.add(new Rating(
-                    map.get(rating.getCategoryId()),
+                    categoryMap.get(rating.getCategoryId()),
                     rating.getPriorityOrder(),
                     rating.getSatisfactionRating()
             ));
         }
+
         return ratingRepository.saveAll(newRatings);
     }
 
@@ -91,8 +94,8 @@ public class RatingServiceImpl implements RatingService {
 
     private void validatePriorityOrder(int priorityOrder, long numOfCategories) {
         if (priorityOrder < 1 || priorityOrder > numOfCategories) {
-            String msg = "priority order for the category must lie between 1 and " + numOfCategories;
-            throw new BadRequestException(msg);
+            String message = "priority order for the category must lie between 1 and " + numOfCategories;
+            throw new BadRequestException(message);
         }
     }
 

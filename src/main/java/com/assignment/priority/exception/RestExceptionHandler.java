@@ -16,8 +16,8 @@ public class RestExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 bindingResult.getAllErrors().toString(),
-                System.currentTimeMillis());
-
+                System.currentTimeMillis()
+        );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -26,8 +26,8 @@ public class RestExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 e.getMessage(),
-                System.currentTimeMillis());
-
+                System.currentTimeMillis()
+        );
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
@@ -36,8 +36,8 @@ public class RestExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 e.getMessage(),
-                System.currentTimeMillis());
-
+                System.currentTimeMillis()
+        );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
