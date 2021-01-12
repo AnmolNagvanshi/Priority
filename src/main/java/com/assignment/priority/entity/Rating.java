@@ -36,7 +36,7 @@ public class Rating {
     @JsonIgnore
     private Category category;
 
-    // priority 2 is higher than priority 1
+    // priority 1 is higher than priority 2
     private Integer priorityOrder;
 
     @Min(value = 1, message = "rating should be between 1 and 5")

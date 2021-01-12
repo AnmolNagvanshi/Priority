@@ -44,7 +44,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<Rating> createAllRatings(List<RatingDto> ratings) {
+    public List<Rating> createRatingsForAllCategories(List<RatingDto> ratings) {
         validateAllPriorityOrders(ratings);
 
         List<Category> categories = categoryRepository.findAll();
@@ -71,7 +71,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public Map<String, List<Rating>> getAllRatings() {
+    public Map<String, List<Rating>> getAllRatingsGroupedByCategory() {
         List<Category> categories = categoryRepository.findAll();
         Map<String, List<Rating>> categoryToRatings = new HashMap<>();
         for (Category category : categories) {
@@ -80,6 +80,13 @@ public class RatingServiceImpl implements RatingService {
         return categoryToRatings;
     }
 
+    /**
+     * Checks that the priority order of all ratings are unique,
+     * lies between 1 and 'number of categories' and
+     * ratings for all categories are received.
+     * @param ratings List of all the ratings to be validated
+     * @throws BadRequestException if the constraints are not met
+     */
     private void validateAllPriorityOrders(List<RatingDto> ratings) {
         long numOfCategories = categoryRepository.count();
         Set<Integer> set = new HashSet<>();
@@ -90,8 +97,15 @@ public class RatingServiceImpl implements RatingService {
                 throw new BadRequestException("priority order of all categories should be unique");
             set.add(priorityOrder);
         }
+        if (set.size() != numOfCategories)
+            throw new BadRequestException("rating for some category is missing");
     }
 
+    /**
+     * Checks that priorityOrder of a single rating lies between 1 and 'number of categories'.
+     * @param priorityOrder priority order of a rating
+     * @param numOfCategories count of categories currently present in the database
+     */
     private void validatePriorityOrder(int priorityOrder, long numOfCategories) {
         if (priorityOrder < 1 || priorityOrder > numOfCategories) {
             String message = "priority order for the category must lie between 1 and " + numOfCategories;

@@ -27,7 +27,7 @@ public class RatingController {
 
     @PostMapping("categories/ratings")
     public List<Rating> createAllRatings(@NonNull @Valid @RequestBody List<RatingDto> ratings) {
-        return ratingService.createAllRatings(ratings);
+        return ratingService.createRatingsForAllCategories(ratings);
     }
 
     @PostMapping("categories/{categoryId}/ratings")
@@ -38,7 +38,7 @@ public class RatingController {
 
     @GetMapping("categories/ratings")
     public Map<String, List<Rating>> getAllRatings() {
-        return ratingService.getAllRatings();
+        return ratingService.getAllRatingsGroupedByCategory();
     }
 
     @GetMapping("categories/{categoryId}/ratings")

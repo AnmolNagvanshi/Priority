@@ -10,9 +10,9 @@ public interface RatingService {
 
     Rating createRatingByCategoryId(Integer categoryId, Rating rating);
 
-    List<Rating> createAllRatings(List<RatingDto> ratings);
+    List<Rating> createRatingsForAllCategories(List<RatingDto> ratings);
 
     List<Rating> getAllRatingsByCategoryId(Integer categoryId);
 
-    Map<String, List<Rating>> getAllRatings();
+    Map<String, List<Rating>> getAllRatingsGroupedByCategory();
 }

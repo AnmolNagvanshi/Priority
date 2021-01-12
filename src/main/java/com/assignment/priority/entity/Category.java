@@ -12,11 +12,13 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * The Category class represents Priority Area.
+ */
 @NoArgsConstructor
 @Getter @Setter
 @Entity
 @Table(name = "categories")
-// class Category represents priority areas
 public class Category {
 
     @Id
